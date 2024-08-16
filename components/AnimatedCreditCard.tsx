@@ -36,7 +36,7 @@ const RegularContent: React.FC<CreditCardComponentProps> = React.memo(
     return (
       <LinearGradient
         colors={gradientColors}
-        className="min-h-[190px] max-h-[190px] w-[320px] relative rounded-2xl cursor-pointer mb-8"
+        className="min-h-[190px] max-h-[190px] w-[350px] relative rounded-2xl cursor-pointer mb-8"
       >
         <View className="p-6">
           <View className="flex-row justify-between items-center">

@@ -1,15 +1,15 @@
 import { View, Text, Image } from "react-native";
 
-import { useGetAllCardsQuery } from "@/store/cards";
 import {
   AppSafeAreaView,
-  Button,
+  AppButton,
   CreditCardComponent,
   Loader,
 } from "@/components";
 import { images } from "@/constants";
 import { router } from "expo-router";
 import { CreditCardComponentProps } from "@/types";
+import { useGetAllCardsQuery } from "@/store/cards";
 
 const Cards = () => {
   const { data, isLoading, error } = useGetAllCardsQuery("");
@@ -43,9 +43,12 @@ const Cards = () => {
             </Text>
 
             <View className="mt-12 w-full">
-              <Button buttonColor="blue" onPress={() => router.push("/create")}>
+              <AppButton
+                color="bg-blue-800"
+                onPress={() => router.push("/create")}
+              >
                 Get a virtual card
-              </Button>
+              </AppButton>
             </View>
           </View>
         ) : (
@@ -69,12 +72,14 @@ const Cards = () => {
 
             {maximumCardsCreated ? null : (
               <View className="mt-4 px-4">
-                <Button
-                  buttonColor="blue"
+                <AppButton
+                  color="bg-blue-800"
                   onPress={() => router.push("/create")}
+                  isLoading={isLoading}
+                  isDisabled={isLoading}
                 >
                   Create another card
-                </Button>
+                </AppButton>
               </View>
             )}
           </View>

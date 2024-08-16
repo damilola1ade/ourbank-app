@@ -9,7 +9,7 @@ import { HelperText, TextInput, useTheme } from "react-native-paper";
 import { useAppDispatch } from "@/hooks/RTKHooks";
 import { setUser } from "@/slice/authSlice";
 import { useLoginMutation } from "@/store/auth";
-import { AppSafeAreaView, Button } from "@/components";
+import { AppSafeAreaView, AppButton } from "@/components";
 import { ErrorProp, SignInRequest } from "@/types";
 
 const Login = () => {
@@ -137,14 +137,14 @@ const Login = () => {
           />
 
           <View className="mt-8">
-            <Button
-              buttonColor={theme.colors.secondary}
+            <AppButton
+              color="bg-secondary"
               onPress={handleSubmit(onSubmit)}
               isLoading={isLoading}
               isDisabled={isLoading}
             >
               Login
-            </Button>
+            </AppButton>
           </View>
 
           <View className="justify-center pt-5 flex-row gap-1 text-lg ">

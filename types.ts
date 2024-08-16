@@ -11,9 +11,8 @@ export interface TabIconProps {
 }
 
 export interface ButtonProps {
-  children: string;
-  className?: string;
-  buttonColor: string;
+  children?: string;
+  color: string;
   onPress: () => void | Promise<void>;
   isLoading?: boolean;
   isDisabled?: boolean;

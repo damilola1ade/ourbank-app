@@ -8,7 +8,7 @@ import { useTheme } from "react-native-paper";
 import { Controller, useForm } from "react-hook-form";
 import { useCreateCardMutation } from "@/store/cards";
 import { router } from "expo-router";
-import { AppSafeAreaView } from "@/components";
+import { AppButton, AppSafeAreaView } from "@/components";
 import { CreateCardValues } from "@/types";
 
 const providers = [
@@ -105,7 +105,7 @@ const CreateCard = () => {
                 }
                 boxStyles={{
                   minHeight: 54,
-                  marginTop: 24,
+                  marginTop: 10,
                   backgroundColor: "#1e1e2d",
                   borderColor: theme.colors.primary,
                   borderRadius: 16,
@@ -124,16 +124,14 @@ const CreateCard = () => {
         />
 
         <View className="mt-80 mx-6 absolute w-full">
-          <Button
-            buttonColor="blue"
-            labelStyle={{ color: "white", fontSize: 18, fontWeight: "bold" }}
-            className="w-full p-2 rounded-xl"
+          <AppButton
+            color="bg-blue-800"
             onPress={handleSubmit(onSubmit)}
-            loading={isLoading}
-            disabled={isLoading}
+            isLoading={isLoading}
+            isDisabled={isLoading}
           >
             Create card
-          </Button>
+          </AppButton>
         </View>
       </View>
     </AppSafeAreaView>

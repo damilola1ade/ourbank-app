@@ -1,4 +1,4 @@
-export * from "./Button";
+export * from "./AppButton";
 export * from "./CreditCardComponent";
 export * from "./Input";
 export * from "./SafeAreaView";

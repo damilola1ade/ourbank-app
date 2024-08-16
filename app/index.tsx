@@ -5,7 +5,7 @@ import { images } from "@/constants";
 import { StatusBar } from "expo-status-bar";
 import { router } from "expo-router";
 import { useTheme } from "react-native-paper";
-import { AppSafeAreaView, Button } from "@/components";
+import { AppSafeAreaView, AppButton } from "@/components";
 
 export default function HomeScreen() {
   const theme = useTheme();
@@ -32,12 +32,12 @@ export default function HomeScreen() {
           </Text>
 
           <View className="mt-8 w-full">
-            <Button
-              buttonColor={theme.colors.secondary}
+            <AppButton
+              color="bg-secondary"
               onPress={() => router.push("/login")}
             >
               Continue with email
-            </Button>
+            </AppButton>
           </View>
         </View>
       </ScrollView>

@@ -1,15 +1,14 @@
+import { router, useLocalSearchParams } from "expo-router";
+import { View } from "react-native";
 import {
   AppSafeAreaView,
-  Button,
-  CreditCardComponent,
+  AppButton,
   RecentTransactions,
   Loader,
   AnimatedCreditCard,
 } from "@/components";
 import { useFormatCardNumber } from "@/hooks/useFormatCardNumber";
 import { useDeleteCardMutation, useGetSingleCardQuery } from "@/store/cards";
-import { router, useLocalSearchParams } from "expo-router";
-import { ScrollView, View } from "react-native";
 
 export default function CardPage() {
   const { id } = useLocalSearchParams();
@@ -32,7 +31,7 @@ export default function CardPage() {
     } catch (error) {}
   };
 
-  if (isLoading) {
+  if (isLoading || isCardLoading) {
     return <Loader />;
   }
 
@@ -50,9 +49,14 @@ export default function CardPage() {
       </View>
 
       <View className="mt-56 px-16">
-        <Button buttonColor="red" onPress={handlePress}>
+        <AppButton
+          color="bg-red-700"
+          onPress={handlePress}
+          isLoading={isLoading}
+          isDisabled={isLoading}
+        >
           Deactivate card
-        </Button>
+        </AppButton>
       </View>
 
       <View className="mt-12 px-6">
