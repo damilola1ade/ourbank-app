@@ -13,8 +13,8 @@ export const AppBar = ({ title }: { title: string }) => {
     >
       <Appbar.BackAction
         onPress={() => navigation.goBack()}
-        style={{ backgroundColor: "white" }}
-        size={10}
+        color='white'
+        size={18}
       />
       <Appbar.Content
         title={title}

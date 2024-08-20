@@ -23,7 +23,7 @@ export const LogoutButton: React.FC = () => {
       loading={isLoading}
       disabled={isLoading}
       mode="text"
-      labelStyle={{ color: "white" }}
+      labelStyle={{ color: "red" }}
       icon="power"
       contentStyle={{ flexDirection: "row-reverse" }}
     >

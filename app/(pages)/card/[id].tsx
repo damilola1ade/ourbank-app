@@ -1,5 +1,6 @@
+import { useEffect } from "react";
 import { router, useLocalSearchParams } from "expo-router";
-import { View } from "react-native";
+import { Alert, View } from "react-native";
 import {
   AppSafeAreaView,
   AppButton,
@@ -7,11 +8,16 @@ import {
   Loader,
   AnimatedCreditCard,
 } from "@/components";
+
 import { useFormatCardNumber } from "@/hooks/useFormatCardNumber";
 import { useDeleteCardMutation, useGetSingleCardQuery } from "@/store/cards";
 
+import { useBiometricToViewRoute } from "@/hooks/useBiometricToViewRoute";
+
 export default function CardPage() {
   const { id } = useLocalSearchParams();
+
+  const { isAuthenticated } = useBiometricToViewRoute();
 
   const { data, isLoading: isCardLoading } = useGetSingleCardQuery(id);
 
@@ -20,16 +26,50 @@ export default function CardPage() {
   const [deleteCard, { isLoading }] = useDeleteCardMutation();
 
   const handlePress = async () => {
-    try {
-      const response = await deleteCard({
-        cardId: id,
-      }).unwrap();
-
-      if (response) {
-        router.push("/cards");
-      }
-    } catch (error) {}
+    Alert.alert(
+      'Confirm',
+      'Are you sure you want to deactivate this card?',
+      [
+        {
+          text: 'Cancel',
+          style: 'cancel',
+        },
+        {
+          text: 'Deactivate',
+          style: 'destructive',
+          onPress: async () => {
+            try {
+              const response = await deleteCard({
+                cardId: id,
+              }).unwrap();
+  
+              if (response) {
+                router.push("/cards");
+              }
+            } catch (error) {
+              // Handle the error
+            }
+          },
+        },
+      ]
+    );
   };
+
+  useEffect(() => {
+    if (isAuthenticated === null) return;
+
+    if (!isAuthenticated) {
+      Alert.alert(
+        "Authentication failed",
+        "You are not authorized to view this card.",
+        [{ text: "OK", onPress: () => router.back() }]
+      );
+    }
+  }, [isAuthenticated]);
+
+  if (!isAuthenticated) {
+    return null; // Don't render anything until authentication is successful
+  }
 
   if (isLoading || isCardLoading) {
     return <Loader />;
@@ -48,7 +88,7 @@ export default function CardPage() {
         />
       </View>
 
-      <View className="mt-56 px-16">
+      <View className="mt-56 px-8">
         <AppButton
           color="bg-red-700"
           onPress={handlePress}

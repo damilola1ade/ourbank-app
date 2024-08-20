@@ -1,4 +1,5 @@
 import { images } from "@/constants";
+import { getGradientColors } from "@/hooks/useCardGradientColors";
 import { CreditCardComponentProps } from "@/types";
 import { LinearGradient } from "expo-linear-gradient";
 import React from "react";
@@ -16,21 +17,9 @@ import Animated, {
   withTiming,
 } from "react-native-reanimated";
 
-const getGradientColors = (provider: string) => {
-  switch (provider) {
-    case "Verve":
-      return ["#4c669f", "#3b5998", "#192f6a"];
-    case "Mastercard":
-      return ["#15803D", "#0C4A6E"];
-    case "Visa":
-      return ["#F87171", "#DC2626"];
-    default:
-      return ["#4c669f", "#3b5998", "#192f6a"];
-  }
-};
-
 const RegularContent: React.FC<CreditCardComponentProps> = React.memo(
   ({ provider, cardNumber, cardName, expiryDate }) => {
+
     const gradientColors = getGradientColors(provider);
 
     return (
@@ -99,7 +88,7 @@ const FlippedContent: React.FC<CreditCardComponentProps> = React.memo(
         </View>
 
         <View className="mt-2 px-3 flex justify-end items-end">
-          <Text className="w-[230px] text-left font-bold text-primary text-[7px] lg:text-[10px] tracking-tighter leading-tight">
+          <Text className="w-[220px] text-left font-bold text-primary text-[7px] lg:text-[10px] tracking-tighter leading-tight">
             This virtual card is issued to you and valid for use in line with
             the agreement between the owner of this account and OurBank digital
             services. This card is valid for use at any online payment gateway

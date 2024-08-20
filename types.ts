@@ -13,6 +13,7 @@ export interface TabIconProps {
 export interface ButtonProps {
   children?: string;
   color: string;
+  icon?: string
   onPress: () => void | Promise<void>;
   isLoading?: boolean;
   isDisabled?: boolean;
@@ -37,6 +38,7 @@ export interface SignInRequest {
 
 export interface UserAvatarProps {
   onPress: () => void | VoidFunction;
+  size: number
 }
 
 export interface ErrorProp {
@@ -60,4 +62,11 @@ export interface CreditCardComponentProps {
   cardName: string;
   cardNumber: string;
   cvv: string;
+}
+
+export enum AuthModeEnum {
+  Local,
+  Password,
+  NoComp,
+  Authenticate,
 }

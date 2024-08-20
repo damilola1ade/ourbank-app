@@ -3,19 +3,7 @@ import { Image } from "react-native";
 import { images } from "@/constants";
 import { LinearGradient } from "expo-linear-gradient";
 import { CreditCardComponentProps } from "@/types";
-
-const getGradientColors = (provider: string) => {
-  switch (provider) {
-    case "Verve":
-      return ["#4c669f", "#3b5998", "#192f6a"];
-    case "Mastercard":
-      return ["#15803D", "#0C4A6E"];
-    case "Visa":
-      return ["#F87171", "#DC2626"];
-    default:
-      return ["#4c669f", "#3b5998", "#192f6a"];
-  }
-};
+import { getGradientColors } from "@/hooks/useCardGradientColors";
 
 export const CreditCardComponent: React.FC<CreditCardComponentProps> = ({
   onPress,
@@ -30,7 +18,7 @@ export const CreditCardComponent: React.FC<CreditCardComponentProps> = ({
     <View className="items-center justify-center">
       <LinearGradient
         colors={gradientColors}
-        className="min-h-[190px] max-h-[190px] w-[350px] relative rounded-2xl cursor-pointer mb-8"
+        className="min-h-[190px] max-h-[190px] w-[350px] relative rounded-2xl cursor-pointer"
       >
         <Pressable onPress={onPress}>
           <View className="p-6">

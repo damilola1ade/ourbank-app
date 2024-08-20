@@ -7,6 +7,7 @@ export const AppButton = ({
   isLoading,
   isDisabled,
   color,
+  icon
 }: ButtonProps) => {
   return (
     <Button
@@ -15,6 +16,7 @@ export const AppButton = ({
       onPress={onPress}
       loading={isLoading}
       disabled={isDisabled}
+      icon={icon}
     >
       {children}
     </Button>

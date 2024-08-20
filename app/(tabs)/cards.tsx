@@ -1,4 +1,9 @@
-import { View, Text, Image } from "react-native";
+import {
+  View,
+  Text,
+  Image,
+  FlatList,
+} from "react-native";
 
 import {
   AppSafeAreaView,
@@ -8,13 +13,16 @@ import {
 } from "@/components";
 import { images } from "@/constants";
 import { router } from "expo-router";
-import { CreditCardComponentProps } from "@/types";
 import { useGetAllCardsQuery } from "@/store/cards";
+import React from "react";
 
 const Cards = () => {
-  const { data, isLoading, error } = useGetAllCardsQuery("");
+  const { data, isLoading, refetch } = useGetAllCardsQuery(
+    {},
+    { refetchOnMountOrArgChange: true }
+  );
 
-  const maximumCardsCreated = data?.cards?.length === 3;
+  const cardsCount = data?.cards?.length || 0;
 
   if (isLoading) {
     return <Loader />;
@@ -24,36 +32,11 @@ const Cards = () => {
     <AppSafeAreaView>
       <View className="mt-5 px-4">
         <Text className="text-white text-3xl font-pbold">Cards</Text>
-
-        {!data?.cards?.length ? (
-          <View className="px-6 justify-center items-center">
-            <Image
-              source={images.create}
-              resizeMode="contain"
-              className="mt-8 absolute -top-0 -left-24 w-[800px] h-[150px]"
-            />
-
-            <Text className="mt-64 text-xl text-white font-psemibold">
-              Create a virtual card
-            </Text>
-
-            <Text className="mt-6 text-gray-100 text-xl font-pmedium text-center tracking-tighter">
-              Instantly create a virtual card to make managing online payments
-              easy.
-            </Text>
-
-            <View className="mt-12 w-full">
-              <AppButton
-                color="bg-blue-800"
-                onPress={() => router.push("/create")}
-              >
-                Get a virtual card
-              </AppButton>
-            </View>
-          </View>
-        ) : (
-          <View className="mt-10">
-            {data?.cards?.map((item: CreditCardComponentProps) => (
+        <View className="mt-10">
+          <FlatList
+            data={data?.cards}
+            keyExtractor={(item) => item.id}
+            renderItem={({ item }) => (
               <CreditCardComponent
                 onPress={() =>
                   router.push({
@@ -61,37 +44,56 @@ const Cards = () => {
                     params: { id: item.id },
                   })
                 }
-                key={item.id}
                 provider={item.provider}
                 cardNumber={"**** **** **** ****"}
                 cardName={item.cardName}
                 expiryDate={""}
                 cvv={""}
               />
-            ))}
+            )}
+            ItemSeparatorComponent={() => <View style={{ height: 25 }} />}
+            ListEmptyComponent={() => (
+              <View className="px-6 justify-center items-center">
+                <Image
+                  source={images.create}
+                  resizeMode="contain"
+                  className="mt-8 absolute -top-0 -left-24 w-[800px] h-[150px]"
+                />
 
-            {maximumCardsCreated ? null : (
-              <View className="mt-4 px-4">
-                <AppButton
-                  color="bg-blue-800"
-                  onPress={() => router.push("/create")}
-                  isLoading={isLoading}
-                  isDisabled={isLoading}
-                >
-                  Create another card
-                </AppButton>
+                <Text className="mt-64 text-xl text-white font-psemibold">
+                  Create a virtual card
+                </Text>
+
+                <Text className="mt-6 text-gray-100 text-xl font-pmedium text-center tracking-tighter">
+                  Instantly create a virtual card to make managing online
+                  payments easy.
+                </Text>
+
+                <View className="mt-12 w-full">
+                  <AppButton
+                    color="bg-blue-800"
+                    onPress={() => router.push("/create")}
+                  >
+                    Get a virtual card
+                  </AppButton>
+                </View>
               </View>
             )}
-          </View>
-        )}
+          />
 
-        {/* <FlatList
-          data={data?.cards}
-          keyExtractor={(item) => item.id.toString()}
-          renderItem={({ item }) => <CreditCardComponent item={item} />}
-          ItemSeparatorComponent={() => <View style={{ height: 30 }} />}
-          contentContainerStyle={{ paddingBottom: 20 }}
-        /> */}
+          {cardsCount > 0 && cardsCount < 3 && (
+            <View className="mt-12 px-4">
+              <AppButton
+                color="bg-blue-800"
+                onPress={() => router.push("/create")}
+                isLoading={isLoading}
+                isDisabled={isLoading}
+              >
+                Create another card
+              </AppButton>
+            </View>
+          )}
+        </View>
       </View>
     </AppSafeAreaView>
   );

@@ -52,6 +52,15 @@ export const authAPI = createApi({
       invalidatesTags: ["User"],
     }),
 
+    editProfile: builder.mutation({
+      query: ({ id, ...body }: { id: any; body: any }) => ({
+        url: `auth/edit-profile/${id}`,
+        method: "PUT",
+        data: body,
+      }),
+      invalidatesTags: ["User"],
+    }),
+
     logOut: builder.mutation({
       query: () => ({
         url: "auth/logout",
@@ -62,5 +71,5 @@ export const authAPI = createApi({
   }),
 });
 
-export const { useSignUpMutation, useLoginMutation, useLogOutMutation } =
+export const { useSignUpMutation, useLoginMutation, useEditProfileMutation, useLogOutMutation } =
   authAPI;

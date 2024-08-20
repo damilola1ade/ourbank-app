@@ -1,8 +1,4 @@
-import {
-  AppSafeAreaView,
-  HomeTransactionHistory,
-  UserAvatar,
-} from "@/components";
+import { AppSafeAreaView, UserAvatar } from "@/components";
 import { useAppSelector } from "@/hooks/RTKHooks";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { router } from "expo-router";
@@ -22,7 +18,7 @@ const Home = () => {
       <View className="mt-5 px-4">
         <View className="flex-row justify-between items-center">
           <View className="flex-row items-center gap-2">
-            <UserAvatar onPress={() => router.push("/profile")} />
+            <UserAvatar onPress={() => router.push("/profile")} size={50} />
             <Text className="text-white text-lg font-pbold">
               Hi, {user?.name}
             </Text>

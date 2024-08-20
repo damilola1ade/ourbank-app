@@ -1,19 +1,29 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { View, Text, ScrollView, Image } from "react-native";
+import { View, Text, ScrollView, Image, Alert } from "react-native";
 
 import { images } from "@/constants";
 import { Href, Link, router } from "expo-router";
-import { HelperText, TextInput, useTheme } from "react-native-paper";
+import { HelperText, TextInput } from "react-native-paper";
 
-import { useAppDispatch } from "@/hooks/RTKHooks";
+import { useAppDispatch, useAppSelector } from "@/hooks/RTKHooks";
 import { setUser } from "@/slice/authSlice";
 import { useLoginMutation } from "@/store/auth";
-import { AppSafeAreaView, AppButton } from "@/components";
+import {
+  AppSafeAreaView,
+  AppButton,
+  LoginWithBiometricButton,
+} from "@/components";
 import { ErrorProp, SignInRequest } from "@/types";
 
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
+import { useBiometricAuth } from "@/hooks/useBiometricAuth";
+
 const Login = () => {
-  const theme = useTheme();
+  const { isBiometricSupported } = useBiometricAuth();
+
+  const accessToken = useAppSelector((store) => store.auth.accessToken);
 
   const {
     control,
@@ -31,6 +41,20 @@ const Login = () => {
 
   const [passwordVisible, setPasswordVisible] = useState(false);
 
+  const promptEnableBiometric = async () => {
+    return new Promise((resolve) => {
+      Alert.alert(
+        "Enable Biometric Authentication",
+        "Would you like to enable Face ID/Touch ID for future logins?",
+        [
+          { text: "No", onPress: () => resolve(false) },
+          { text: "Yes", onPress: () => resolve(true) },
+        ],
+        { cancelable: false }
+      );
+    });
+  };
+
   const onSubmit = async (data: SignInRequest) => {
     try {
       const response = await login({
@@ -40,7 +64,21 @@ const Login = () => {
       dispatch(
         setUser({ user: response.user, accessToken: response.accessToken })
       );
-      router.replace("/home" as Href<"/home">);
+
+      router.push("/home");
+
+      if (response.accessToken) {
+        // Store the token to async storage
+        await AsyncStorage.setItem("accessToken", response.accessToken);
+
+        // Optionally prompt the user to enable biometric login
+        if (isBiometricSupported) {
+          const enableBiometric = await promptEnableBiometric();
+          if (enableBiometric) {
+            await AsyncStorage.setItem("biometricEnabled", "true");
+          }
+        }
+      }
     } catch (error) {
       const typedError = error as Error;
       setError(typedError as any);
@@ -145,6 +183,8 @@ const Login = () => {
             >
               Login
             </AppButton>
+
+            {accessToken && <LoginWithBiometricButton />}
           </View>
 
           <View className="justify-center pt-5 flex-row gap-1 text-lg ">

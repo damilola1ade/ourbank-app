@@ -30,6 +30,13 @@ export const authSlice = createSlice({
       state.user = action.payload.user;
       state.accessToken = action.payload.accessToken;
     },
+    updateUser: (state, action: PayloadAction<{ user: any }>) => {
+      // Update the user in the state
+      state.user = { ...state.user, ...action.payload.user };
+
+      // Update the user in AsyncStorage
+      AsyncStorage.mergeItem("user", JSON.stringify({ name: state.user }));
+    },
     logout: (state) => {
       state.user = null;
       state.accessToken = null;
@@ -40,6 +47,6 @@ export const authSlice = createSlice({
 
 export const selectAuth = (state: RootState) => state.auth;
 
-export const { setUser, logout } = authSlice.actions;
+export const { setUser, updateUser, logout } = authSlice.actions;
 
 export default authSlice.reducer;

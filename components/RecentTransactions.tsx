@@ -50,6 +50,7 @@ export const RecentTransactions = ({ data }: TransactionHistoryProp) => {
           Recent transactions
         </Text>
         <Button
+        onPress={() =>router.push('/transaction-history')}
           // onPress={() =>
           //   router.push("/transaction-history" as Href<"/transaction-history">)
           // }

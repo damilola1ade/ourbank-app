@@ -2,7 +2,6 @@ import { Stack } from "expo-router";
 import { AppBar } from "@/components";
 
 export default function PageLayout() {
-
   return (
     <Stack>
       <Stack.Screen
@@ -23,6 +22,13 @@ export default function PageLayout() {
         name="card/[id]"
         options={{
           header: () => <AppBar title="Card details" />,
+        }}
+      />
+
+      <Stack.Screen
+        name="profile/[id]"
+        options={{
+          header: () => <AppBar title="Edit profile" />,
         }}
       />
     </Stack>

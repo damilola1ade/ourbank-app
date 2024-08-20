@@ -2,7 +2,7 @@ import { View, Text, ScrollView, TextInput } from "react-native";
 import React, { useState } from "react";
 import { transactionHistory } from "@/constants/data";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { AppSafeAreaView, Input } from "@/components";
+import { AppSafeAreaView } from "@/components";
 
 const TransactionHistory = () => {
   const [searchQuery, setSearchQuery] = useState("");

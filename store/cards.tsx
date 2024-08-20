@@ -63,6 +63,7 @@ export const cardAPI = createApi({
         url: `card/get-card/${cardId}`,
         method: "GET",
       }),
+      providesTags: ["Card"],
     }),
 
     deleteCard: builder.mutation({
